@@ -20,6 +20,9 @@ from djangoapps.exa import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^test/jdpay/notify/$', views.NotifyViewset.as_view()),
+    url(r'^test/jdpay/refund/$', views.refund, name="refund"),
+    url(r'^test/jdpay/revoke/$', views.revoke, name="revoke"),
+    url(r'^test/jdpay/refund/notify/$', views.refund_notify, name="refund_notify"),
     url(r'^test/jdpay/pay_res/$', views.RedirectViewset.as_view()),
-    url(r'^$', views.ceshi),
+    url(r'^$', views.create_order),
 ]

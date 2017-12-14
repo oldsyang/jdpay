@@ -23,6 +23,12 @@ MERCHANT_WY_RSA_PUB_KEY = 'exa/key/jd_public_key.pem'
 # 在线支付接口
 PAY_URL = 'https://wepay.jd.com/jdpay/saveOrder'
 
+# 退款地址
+REFUND_URL = "https://paygate.jd.com/service/refund/"
+
+# 撤销申请地址
+REVOKE_URL = "https://paygate.jd.com/service/revoke"
+
 # 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
 ASYN_NOTIFY_URL = "http://xxxx.com:8888/test/jdpay/notify"
 
