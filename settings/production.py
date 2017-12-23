@@ -29,8 +29,8 @@ REFUND_URL = "https://paygate.jd.com/service/refund/"
 # 撤销申请地址
 REVOKE_URL = "https://paygate.jd.com/service/revoke"
 
-# 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
+# 异步接收支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
 ASYN_NOTIFY_URL = "http://xxxx.com:8888/test/jdpay/notify"
 
-# 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
+# 异步接收支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
 REDIRECT_URL = "http://xxxx.com:8888/test/jdpay/notify"

@@ -122,8 +122,8 @@ MERCHANT_WY_RSA_PUB_KEY = 'exa/key/jd_public_key.pem'
 # 在线支付接口
 PAY_URL = 'https://wepay.jd.com/jdpay/saveOrder'
 
-# 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
+# 异步接收支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
 ASYN_NOTIFY_URL = "http://oldsyang.com:8888/test/weixin/"
 
-# 异步接收微信支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
+# 异步接收支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
 REDIRECT_URL = "http://oldsyang.com:8888/test/weixin/"
