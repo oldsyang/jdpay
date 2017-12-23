@@ -1,0 +1,6 @@
+django==1.8.16
+Pillow==4.3.0
+qrcode==5.3
+requests==2.18.4
+M2Crypto==0.27.0
+pycryptodome==3.4.7
