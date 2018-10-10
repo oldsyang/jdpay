@@ -15,7 +15,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from djangoapps.exa import views
+from djangoapps.pay import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^test/jdpay/revoke/$', views.revoke, name="revoke"),
     url(r'^test/jdpay/refund/notify/$', views.refund_notify, name="refund_notify"),
     url(r'^test/jdpay/pay_res/$', views.RedirectViewset.as_view()),
-    url(r'^$', views.create_order),
+    url(r'^$', views.index),
 ]

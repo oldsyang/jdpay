@@ -26,7 +26,8 @@ MERCHANT_WY_RSA_PUB_KEY = 'utils/key/jd_public_key.pem'
 
 # 在线支付接口
 PAY_URL = 'https://wepay.jd.com/jdpay/saveOrder'
-
+#手机支付接口
+MOBILE_PAY_URL = 'https://h5pay.jd.com/jdpay/saveOrder' #手机
 # 退款地址
 REFUND_URL = "https://paygate.jd.com/service/refund/"
 
