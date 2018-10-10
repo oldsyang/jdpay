@@ -1,13 +1,16 @@
 ## 说明
 
-做了微信。支付宝和京东支付之后，发现，最扯蛋的支付，肯定是京东支付，要完整开发京东支付，必须要看完京东支付开发者文档的官网每一个角落，绝对不能凭你的任何经验去猜测有些流程，比如公私钥加解密（不看官网，保证你后悔）、发送请求的方式（form表单提交，看了官网你会发现好怪异），支付同步跳转（还是post，fk），支付成功后返回居然没有支付订单号（完全靠自己去维护，fk）
+
+[github地址](https://github.com/oldsyang/jdpay)
+
+做了微信。支付宝和京东支付之后，发现，文档不够友好的，肯定是京东支付，要完整开发京东支付，必须要看完京东支付开发者文档的官网每一个角落，绝对不能凭你的任何经验去猜测有些流程，比如公私钥加解密（不看官网，保证你后悔）、发送请求的方式（form表单提交，看了官网你会发现好怪异），支付同步跳转（还是post，fk），支付成功后返回居然没有支付订单号（完全靠自己去维护，fk）
 
 ## 技术描点
 
 首先要去看官网的：http://payapi.jd.com/。 项目使用的是pc网页支付
 
 
-一. 统一下单的接口：https://wepay.jd.com/jdpay/saveOrder
+### 一. 统一下单的接口：https://wepay.jd.com/jdpay/saveOrder
 
 参数说明：http://payapi.jd.com/docList.html?methodName=2
 
@@ -22,7 +25,7 @@
 5)  为保证信息安全，表单中的各个字段除了merchant（商户号）、版本号（version）、签名（sign）以外，其余字段全部采用3DES进行加密。
 
 
-二. 生成签名
+### 二. 生成签名
 
 签名过程分为两步，首先是将原始参数按照规则拼接成一个字符串S1，然后再将S1根据签名算法生成签名字符串sign。
 参数原始字符串的拼接规则：
@@ -85,7 +88,7 @@ def sign(self, prestr):
 
 ```
 
-三. DES3对每个参数进行加密（merchant（商户号）、版本号（version）、签名（sign）除外）
+### 三. DES3对每个参数进行加密（merchant（商户号）、版本号（version）、签名（sign）除外）
 
 为防止明文数据在post表单提交的时候暴露，所以京东做了DES3对字段进行加密（不用表单提交不就行了，还搞这么复杂，真该学学支付宝和微信）
 
@@ -180,7 +183,7 @@ def encode_des(to_encode_str, des_key):
 
 
 
-四. 异步回调
+### 四. 异步回调
 
 提交之后请求之后，就会跳转到京东的支付页面，可登录账户支付，也可用京东app或者微信扫描支付。
 
@@ -296,7 +299,7 @@ def verify_mysign(cls, sign, xml_str, jd_public_key):
 验证通过之后再返回去除sign的xml字符串，并提取出里边的内容（详情参数所代表的含义请看官方文档）
 
 
-五. 同步跳转
+### 五. 同步跳转
 
 同步跳转就没啥好说了，只是给个跳转地址，但是这里一定要注意，这个的是一个post请求（好像京东啥都喜欢post），而非微信或者支付宝或者other什么的get请求。所以不要设置错了
 
@@ -304,4 +307,14 @@ def verify_mysign(cls, sign, xml_str, jd_public_key):
 这里我的源代码里用的都是京东提供的测试商户号，还有一大推京东设置好的key，具体要去下载京东的【京东支付PC&H5接口文档】，在文档的最底部有帐号信息。
 
 demo里边还有申请退款，申请撤单的接口，其实写好一个接口的完成流程，别的流程都是直接套用就可以了。
+
+## 安装须知
+
+注意：在安装M2Crypto库的时候要注意，可能需要安装很多依赖库
+```bash
+sudo apt-get install build-essential autoconf libtool pkg-config python-opengl python-imaging python-pyrex python-pyside.qtopengl idle-python2.7 qt4-dev-tools qt4-designer libqtgui4 libqtcore4 libqt4-xml libqt4-test libqt4-script libqt4-network libqt4-dbus python-qt4 python-qt4-gl libgle3 python-dev libssl-dev
+```
+
+[博客地址](http://oldsyang.com/001/p/5fa5d8a9-649d-4679-a4b5-1c1a2ed68b51.html)
+
 

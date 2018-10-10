@@ -1,22 +1,16 @@
 # -*- coding: utf-8 -*-
 # @Author  : oldsyang
 
-import hashlib
-import string
-import requests
-import json
-import random
-import time
 import base64
+import random
+import string
 import struct
-from M2Crypto import BIO, RSA as MRSA
 
-from django.utils.encoding import smart_str
+import requests
+from Crypto.Cipher import DES3
+from Crypto.Hash import SHA256
+from M2Crypto import RSA as MRSA
 from django.conf import settings
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
-from Crypto.Hash import SHA256, MD5, SHA
-from Crypto.Cipher import DES, DES3, PKCS1_v1_5 as Cipher_pkcs1_v1_5
 
 
 class JdException(Exception):
@@ -220,7 +214,7 @@ class JdPay(ToolsClass):
         for key, value in params.items():
             input_str = ' <input name="{0}" type="hidden" id="{1}" value="{2}" /><br/>'.format(key, key, value)
             form_str = "".join([form_str, input_str])
-        form_str = '%s</form>' % form_str
+        form_str = '{}{}</form>'.format(form_str, "<input class='btn btn-default' type='submit' value={} />")
         return form_str
 
     def sign(self, prestr):
@@ -271,15 +265,14 @@ WwNbxwXnK5LSgsQc1BhT5NcXHXpGBdt7P8NMez5qGieOKqHGvT0qvjyYnYA29a8Z
 
         '''
         self.param_dict = ["tradeNum", "tradeName", "tradeTime", "amount", "orderType", "currency", "userId"]
-        for i in self.param_dict:
-            if i not in kwargs:
-                raise JdException("缺少在线支付必填参数{0}".format(i))
+        for each in self.param_dict:
+            if each not in kwargs:
+                raise JdException("缺少在线支付必填参数{}".format(each))
 
         if not self.ASYN_NOTIFY_URL:
             raise JdException("缺少在线支付必填参数notifyUrl")
         if not self.REDIRECT_URL:
             raise JdException("缺少在线支付必填参数callbackUrl")
-
         if not self.PAY_URL:
             raise JdException("缺少在线支付的url")
 
@@ -312,16 +305,9 @@ WwNbxwXnK5LSgsQc1BhT5NcXHXpGBdt7P8NMez5qGieOKqHGvT0qvjyYnYA29a8Z
         # 转为form字符串
         form_str = self.to_form(params, self.PAY_URL)
         print("form_str:", form_str)
-
         # res = requests.post(self.PAY_URL, data=params)
         # 测试代码结束————————
-
         return form_str, params
-
-
-
-        # res_content_dict = self.__option_params_return_dict(self.ORDER_URL, params)
-        # return res_content_dict, self.get_qrcode(res_content_dict, "code_url")
 
     def revoke(self, **kwargs):
         """
@@ -356,9 +342,9 @@ WwNbxwXnK5LSgsQc1BhT5NcXHXpGBdt7P8NMez5qGieOKqHGvT0qvjyYnYA29a8Z
             "oTradeNum": kwargs.get("oTradeNum"),
         }
 
-        return self.__option_data(params, self.REVOKE_URL)
+        return self._option_data(params, self.REVOKE_URL)
 
-    def __option_data(self, params, to_url):
+    def _option_data(self, params, to_url):
         """
         签名，加密并发送报文
         Args:
@@ -406,7 +392,6 @@ WwNbxwXnK5LSgsQc1BhT5NcXHXpGBdt7P8NMez5qGieOKqHGvT0qvjyYnYA29a8Z
         # 测试代码结束——————————
 
         res = requests.post(to_url, data=xml_str_with_encrypt, headers={"content-type": "application/xml"})
-        print("res.text:", res.text)
 
         encrypt_begin = res.text.find('<encrypt>')
         encrypt_end = res.text.find('</encrypt>')
@@ -417,7 +402,6 @@ WwNbxwXnK5LSgsQc1BhT5NcXHXpGBdt7P8NMez5qGieOKqHGvT0qvjyYnYA29a8Z
         # 解密并验证，成功则返回没有sign的xml字符串，否则返回None
         xml_new_str = JdPay.notify_verify(res.text, settings.MERCHANT_DESKEY, settings.MERCHANT_RSA_PUB_KEY)
 
-        print("jm_str2:", xml_new_str)
         return xml_new_str
 
     def refund(self, **kwargs):
@@ -469,4 +453,4 @@ WwNbxwXnK5LSgsQc1BhT5NcXHXpGBdt7P8NMez5qGieOKqHGvT0qvjyYnYA29a8Z
             "oTradeNum": kwargs.get("oTradeNum"),
         }
 
-        return self.__option_data(params, self.REFUND_URL)
+        return self._option_data(params, self.REFUND_URL)

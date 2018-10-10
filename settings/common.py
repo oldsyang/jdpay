@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'exa',
+    'pay',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -101,29 +101,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# 商户号
-MERCHANT = '22294531'
-
-# 对数据加密的DESKEY
-MERCHANT_DESKEY = 'ta4E/aspLA3lgFGKmNDNRYU92RkZ4w2t'
-
-# 对数据加密的MD5KEY
-MERCHANT_MD5KEY = 'test'
-
-# 私钥路径
-MERCHANT_RSA_PRI_KEY = 'exa/key/private_key.pem'
-
-MERCHANT_RSA_PUB_KEY = 'exa/key/jd_public_key.pem'
-
-# 京东公钥（验证）
-MERCHANT_WY_RSA_PUB_KEY = 'exa/key/jd_public_key.pem'
-
-# 在线支付接口
-PAY_URL = 'https://wepay.jd.com/jdpay/saveOrder'
-
-# 异步接收支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
-ASYN_NOTIFY_URL = "http://oldsyang.com:8888/test/weixin/"
-
-# 异步接收支付结果通知的回调地址，通知url必须为外网可访问的url，不能携带参数。
-REDIRECT_URL = "http://oldsyang.com:8888/test/weixin/"
